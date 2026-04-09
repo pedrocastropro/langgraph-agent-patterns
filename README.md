@@ -1,17 +1,31 @@
 # LangGraph Agent Patterns
 
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
+[![LangGraph](https://img.shields.io/badge/LangGraph-framework-1C3C3C?logo=langchain&logoColor=white)](https://langchain-ai.github.io/langgraph/)
+[![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o--mini-412991?logo=openai&logoColor=white)](https://platform.openai.com/)
+[![Jupyter](https://img.shields.io/badge/Jupyter-notebooks-F37626?logo=jupyter&logoColor=white)](https://jupyter.org/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+
 Executable repository demonstrating the fundamental patterns for building agents with LangGraph — from the prebuilt helper to manual construction with state, memory, and routing.
 
 ## Architecture
 
 ```
-01 create_react_agent     Prebuilt agent (2 nodes: agent + tools)
-        │
-02 StateGraph manual      Same agent built from scratch
-        │
-03 MemorySaver            In-session memory via thread_id
-        │
-04 conditional_edges      Deterministic router → specialized nodes
+Level 1 — Foundations
+├── N1A  create_react_agent       Prebuilt agent (2 nodes: agent + tools)
+├── N1B  StateGraph manual        Same agent built from scratch
+├── N1C  MemorySaver              In-session memory via thread_id
+└── N1D  conditional_edges        Deterministic router → specialized nodes
+
+Level 2 — Patterns
+├── N2A  State & Routing          MessagesState · Command API · LLM routing · Prompt chaining
+├── N2B  HITL · Streaming         interrupt_before · stream modes · SQLite checkpointer
+└── N2C  Architectural Patterns   Orchestrator-Worker · Evaluator-Optimizer
+
+Level 3 — Multi-Agent (WIP)
+├── N3A  Subgraph & Supervisor
+├── N3B  Swarm & Send API
+└── N3C  Long-term Memory
 ```
 
 ## Prerequisites
@@ -46,14 +60,24 @@ python -m ipykernel install --user --name langgraph-patterns --display-name "Lan
 
 ## Notebooks
 
-Run them in order — each one builds on the previous.
+Run them in order — each level builds on the previous.
+
+### Level 1 — Foundations
 
 | # | Notebook | What it demonstrates |
 |---|----------|---------------------|
-| 01 | `create_agent` | `create_react_agent` prebuilt + 1 custom tool |
-| 02 | `state_graph` | Same graph built manually with `StateGraph` + `TypedDict` + Reducers |
-| 03 | `memory_saver` | `MemorySaver` — multi-turn memory via `thread_id` |
-| 04 | `conditional_edges` | Deterministic intent router → 3 specialized nodes |
+| N1A | `N1A_create_agent` | `create_react_agent` prebuilt + 1 custom tool |
+| N1B | `N1B_state_graph` | Same graph built manually with `StateGraph` + `TypedDict` + Reducers |
+| N1C | `N1C_memory_saver` | `MemorySaver` — multi-turn memory via `thread_id` |
+| N1D | `N1D_conditional_edges` | Deterministic intent router → 3 specialized nodes |
+
+### Level 2 — Patterns
+
+| # | Notebook | What it demonstrates |
+|---|----------|---------------------|
+| N2A | `N2A_state_routing` | `MessagesState` · `Command` API · LLM routing with structured output · Prompt chaining with validation |
+| N2B | `N2B_hitl_streaming_memory` | `interrupt_before` (HITL) · Streaming (`updates` / `messages`) · `SqliteSaver` persistent memory |
+| N2C | `N2C_patterns_advanced` | Orchestrator-Worker (parallel decomposition) · Evaluator-Optimizer (iterative quality loop) |
 
 ### Running
 
@@ -72,8 +96,11 @@ Select the **"LangGraph Patterns"** kernel in each notebook. The first cell in e
 ├── requirements.txt      # All dependencies
 ├── README.md
 └── notebooks/
-    ├── 01_create_agent.ipynb
-    ├── 02_state_graph.ipynb
-    ├── 03_memory_saver.ipynb
-    └── 04_conditional_edges.ipynb
+    ├── N1A_create_agent.ipynb
+    ├── N1B_state_graph.ipynb
+    ├── N1C_memory_saver.ipynb
+    ├── N1D_conditional_edges.ipynb
+    ├── N2A_state_routing.ipynb
+    ├── N2B_hitl_streaming_memory.ipynb
+    └── N2C_patterns_advanced.ipynb
 ```
